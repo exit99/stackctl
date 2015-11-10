@@ -10,14 +10,14 @@ import (
 var cmds = map[string]interface{}{
 	"create":  commands.TerraformApply,
 	"destroy": commands.TerraformDestroy,
+	"list":    commands.Instances,
 }
 
 func main() {
 	args := os.Args[1:]
 	cmd := args[0]
 	if ok := ValidCommand(cmd); ok {
-		fmt.Println(args)
-		cmds[cmd].(func(...[]string))(args[1:])
+		cmds[cmd].(func([]string))(args[1:])
 	} else {
 		msg := fmt.Sprintf("ERROR: '%s' command does not exists!", cmd)
 		helpers.PrintColor("red", msg)
