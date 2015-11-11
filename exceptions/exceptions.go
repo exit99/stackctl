@@ -16,3 +16,7 @@ func (e *CliError) Error() string {
 	fmt.Println(e.Helper)
 	return fmt.Sprintf("%s%s", e.Msg, e.Helper)
 }
+
+func ConfDoesNotExist(dir string) {
+	helpers.PrintColor("red", fmt.Sprintf("ERROR: '%s' does not exist", dir))
+}

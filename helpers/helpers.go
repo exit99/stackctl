@@ -1,6 +1,10 @@
 package helpers
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 var colors = map[string]string{
 	"red":    "\x1b[31;1m",
@@ -20,4 +24,11 @@ func PrintColor(color, msg string) {
 		color = colors["red"]
 	}
 	fmt.Println(color, msg, colors["end"])
+}
+
+func GetInput(msg string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print(msg)
+	text, _ := reader.ReadString('\n')
+	return text
 }
