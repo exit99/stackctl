@@ -4,3 +4,7 @@ class CommandExecutionError(Exception):
 
 class InvalidCommandArgs(Exception):
     pass
+
+
+class WrapperFailure(Exception):
+    pass

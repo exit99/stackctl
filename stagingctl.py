@@ -3,16 +3,17 @@ import sys
 from tabulate import tabulate
 from novaclient.exceptions import AuthorizationFailure, Unauthorized
 
-from cmds import Clone, Images, List
+from cmds import Clone, Images, List, Sanitize
 from colors import red
 
-from errors import CommandExecutionError, InvalidCommandArgs
+from errors import CommandExecutionError, InvalidCommandArgs, WrapperFailure
 
 
 CMDS = {
     'clone': Clone,
     'images': Images,
     'list': List,
+    'sanitize': Sanitize,
 }
 
 
@@ -36,7 +37,7 @@ def main():
     except (AuthorizationFailure, Unauthorized):
         print red("Authentication Failed!")
         print "Did you 'source TENANT_NAME.openrc.sh' with a valid password?"
-    except (InvalidCommandArgs, CommandExecutionError) as e:
+    except (InvalidCommandArgs, CommandExecutionError, WrapperFailure) as e:
         print e.message
 
 
