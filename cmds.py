@@ -1,11 +1,13 @@
 import re
 from datetime import datetime
+from getpass import getpass
 
 import progressbar
 from colors import green, red
 from novaclient import exceptions
 from tabulate import tabulate
 
+import ssh
 from errors import CommandExecutionError, InvalidCommandArgs
 from nova_wrapper import NovaWrapper
 
@@ -16,6 +18,7 @@ class AbstractCommand(object):
 
     def execute(self, *args):
         self.valid_args(args)
+        self.flags = self.extract_flags(args)
         self.nova = NovaWrapper() if self.needs_auth else None
         self.run(*args)
 
@@ -33,15 +36,26 @@ class AbstractCommand(object):
         for arg in args:
             if re.match(".*?=.*", arg):
                 index = arg.index('=')
-                flags[arg[:index]] = arg[index+1:]
+                flags[arg[:index].strip('-')] = arg[index+1:]
         return flags
+
+    def ssh_connect(self, server):
+        user = self.flags.get('user')
+        host = self.nova.floating_ip(server)
+        try:
+            port = int(self.flags.get('port', 22))
+        except ValueError:
+            port = 22
+        print "Connecting to {}@{} -p {}".format(user, host, port)
+        conn = ssh.Connection(host, username=user, port=port)
+        return conn
 
 
 class List(AbstractCommand):
     """Lists instances in the current tenant."""
     def run(self, *args):
         for server in self.nova.servers():
-            # TODO: Add the floating IP of each instance.
+            # TODO: Add the IPs of each instance.
             if server.status == u"ACTIVE":
                 print green(server.name)
             else:
@@ -66,11 +80,17 @@ class Clone(AbstractCommand):
 
 
 class Sanitize(AbstractCommand):
-    """Removes salt minion and turns slave dbs into masters [--user]."""
+    """Removes salt minion and turns slave dbs into masters [--user, --port]."""
     min_args = 1
 
     def run(self, *args):
         target = args[0]
-        flags = self.extract_flags(args)
         server = self.nova.server(target)
-        import pdb; pdb.set_trace()
+        conn = self.ssh_connect(server)
+        pword = getpass("Enter sudo password: ")
+        cmds = [
+            "echo {} | sudo -S service salt-minion stop".format(pword),
+        ]
+        for cmd in cmds:
+            print "Executing: {}".format(cmd.split('|')[-1])
+            conn.execute(cmd)

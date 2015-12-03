@@ -9,7 +9,12 @@
 `stagingctl images`
 
 ### Clone instance
-`stagingctl clone SOURCE_NAME TARGET_NAME`
+`stagingctl clone INSTANCE_NAME CLONE_NAME`
+
+### Sanitize instance
+Turns off salt minion.
+`stagingctl sanitize INSTANCE_NAME`
+Options flags: `--user=USERNAME --port=PORT`
 
 ### Help
 `stagingctl --help`

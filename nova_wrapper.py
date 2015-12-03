@@ -95,6 +95,12 @@ class NovaWrapper():
             print "Assigning floating IP."
             server.add_floating_ip(ip)
 
+    def floating_ip(self, server):
+        try:
+            return self.client.floating_ips.find(instance_id=server.id).ip
+        except (exceptions.NotFound, AttributeError):
+            return None
+
     def print_server(self, server):
         server.get()
         ips = server.networks.values()[0]

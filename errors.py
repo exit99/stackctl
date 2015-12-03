@@ -8,3 +8,7 @@ class InvalidCommandArgs(Exception):
 
 class WrapperFailure(Exception):
     pass
+
+
+class ConnectionFailure(Exception):
+    pass

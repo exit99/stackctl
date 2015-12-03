@@ -6,7 +6,12 @@ from novaclient.exceptions import AuthorizationFailure, Unauthorized
 from cmds import Clone, Images, List, Sanitize
 from colors import red
 
-from errors import CommandExecutionError, InvalidCommandArgs, WrapperFailure
+from errors import (
+    CommandExecutionError,
+    ConnectionFailure,
+    InvalidCommandArgs,
+    WrapperFailure,
+)
 
 
 CMDS = {
@@ -30,6 +35,8 @@ def fetch_command(cmd):
 def main():
     args = sys.argv[1:]
     cmd = fetch_command(args.pop(0))
+    errors = (InvalidCommandArgs, CommandExecutionError,
+              ConnectionFailure, WrapperFailure)
     try:
         cmd.execute(*args)
     except AttributeError:
@@ -37,7 +44,7 @@ def main():
     except (AuthorizationFailure, Unauthorized):
         print red("Authentication Failed!")
         print "Did you 'source TENANT_NAME.openrc.sh' with a valid password?"
-    except (InvalidCommandArgs, CommandExecutionError, WrapperFailure) as e:
+    except errors as e:
         print e.message
 
 
