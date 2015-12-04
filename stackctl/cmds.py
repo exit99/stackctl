@@ -81,10 +81,12 @@ class Delete(AbstractCommand):
     def run(self, *args):
         server = self.nova.server(args[0])
         name = server.name
-        msg = "Are you sure you want to delete {}? Y/n".format(name)
+        msg = "Are you sure you want to delete '{}'? This cannot be undone. Y/n\n".format(name)
         if raw_input(msg) == "Y":
             server.delete()
             print green("{} deleted!".format(server.name))
+        else:
+            print red("Cancelled.")
 
 
 class Images(AbstractCommand):
@@ -117,7 +119,7 @@ class Emancipate(AbstractCommand):
     min_args = 1
 
     def run(self, *args):
-        msg = "Are you sure you want to emancipate? This is unreversable? Y/n "
+        msg = "Are you sure you want to emancipate '{}'? This cannot be undone. Y/n\n".format(args[0])
         if raw_input(msg) == "Y":
             dbuser = self.flags.get('dbuser', '')
             cmds = [
@@ -125,3 +127,5 @@ class Emancipate(AbstractCommand):
                 'mysql -u {} -e "stop slave;"'.format(dbuser),
             ]
             self.remote_command(cmds, *args)
+        else:
+            print red("Cancelled.")
