@@ -9,6 +9,7 @@ from colors import red
 from errors import (
     CommandExecutionError,
     ConnectionFailure,
+    CredentialError,
     InvalidCommandArgs,
     WrapperFailure,
 )
@@ -47,10 +48,9 @@ def main(args, **kwargs):
     except AttributeError:
         pass
     except (AuthorizationFailure, Unauthorized):
-        print red("Authentication Failed!")
-        print source_msg
-    except errors as e:
-        print e.message
+        msg = red("Authentication Failed!\n")
+        msg += source_msg
+        raise CredentialError(msg)
 
 
 def run(cmd, *args, **kwargs):

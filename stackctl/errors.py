@@ -1,5 +1,9 @@
 __all__ = ["CommandExecutionError", "InvalidCommandArgs",
-           "WrapperFailure", "ConnectionFailure"]
+           "WrapperFailure", "ConnectionFailure", "CredentialError"]
+
+
+class CredentialError(Exception):
+    pass
 
 
 class CommandExecutionError(Exception):
