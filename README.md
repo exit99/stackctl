@@ -12,7 +12,7 @@ or imported into a python project.
 
 Python Example:
 ```python
-import stackctl
+from stackctl import stackctl
 
 # args == INSTANCE_NAME etc...
 # kwargs == flags...
@@ -21,6 +21,8 @@ stackctl.run('COMMAND', *args, **kwargs)
 # Example
 stackctl.run("de-salt", "INSTANCE_NAME", user="MYUSER", "PORT"=22)
 ```
+
+*Note:* Some commands, such as clone, take a long time.  You may want to async call them if ran from inside a python script.
 
 ## Commands
 

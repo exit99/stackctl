@@ -60,6 +60,6 @@ def run(cmd, *args, **kwargs):
     main(list((cmd,) + args), cli=False, **kwargs)
 
 
-if __name__ == "__main__":
+def cli():
     if len(sys.argv) > 1:
         main(sys.argv[1:])

@@ -3,7 +3,7 @@ from setuptools import setup
 if __name__ == '__main__':
     setup(
         name='stackctl',
-        version='1.0.0',
+        version='0.0.1',
         author='Zach Kazanski',
         author_email='kazanski.zachary@gmail.com',
         description='Wrapper around python-novaclient to facilitate cloning and maintaining openstack instances.',
@@ -41,6 +41,11 @@ if __name__ == '__main__':
             "tabulate==0.7.5",
             "wrapt==1.10.5",
         ],
+        entry_points={
+            'console_scripts': [
+                'stackctl=stackctl.stackctl:cli',
+            ],
+        },
         classifiers=[
             'Programming Language :: Python',
             'Intended Audience :: Developers',
