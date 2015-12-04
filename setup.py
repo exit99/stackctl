@@ -3,12 +3,11 @@ from setuptools import setup
 if __name__ == '__main__':
     setup(
         name='stackctl',
-        version='0.0.1',
+        version='0.0.2',
         author='Zach Kazanski',
         author_email='kazanski.zachary@gmail.com',
-        description='Wrapper around python-novaclient to facilitate cloning and maintaining openstack instances.',
+        description='Wrapper around python-novaclient to facilitate cloning and maintianing openstack instances.',
         url="https://github.com/Kazanz/stackctl",
-        download_url="https://github.com/kazanz/stackctl/tarball/1.0.0",
         packages=['stackctl'],
         keywords=['openstack'],
         install_requires=[

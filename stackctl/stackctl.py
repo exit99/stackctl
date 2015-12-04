@@ -14,6 +14,9 @@ from errors import (
 )
 
 
+__all__ = ["run"]
+
+
 CMDS = {
     'clone': Clone,
     'de-salt': Desalt,
@@ -34,30 +37,24 @@ def fetch_command(cmd, **kwargs):
         print red("'{}' is not a valid command.".format(cmd))
 
 
-def main(args, cli=True, **kwargs):
+def main(args, **kwargs):
     cmd = fetch_command(args.pop(0), **kwargs)
     errors = (InvalidCommandArgs, CommandExecutionError,
               ConnectionFailure, WrapperFailure)
     source_msg = "Did you 'source TENANT_NAME.openrc.sh' with a valid password?"
-    if cli:
-        try:
-            cmd.execute(*args)
-        except AttributeError:
-            pass
-        except (AuthorizationFailure, Unauthorized):
-            print red("Authentication Failed!")
-            print source_msg
-        except errors as e:
-            print e.message
-    else:
-        try:
-            cmd.execute(*args)
-        except (AuthorizationFailure, Unauthorized):
-            raise RuntimeError("AUTH_FAILED: " + source_msg)
+    try:
+        cmd.execute(*args)
+    except AttributeError:
+        pass
+    except (AuthorizationFailure, Unauthorized):
+        print red("Authentication Failed!")
+        print source_msg
+    except errors as e:
+        print e.message
 
 
 def run(cmd, *args, **kwargs):
-    main(list((cmd,) + args), cli=False, **kwargs)
+    main(list((cmd,) + args), **kwargs)
 
 
 def cli():

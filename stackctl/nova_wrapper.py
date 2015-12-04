@@ -9,6 +9,9 @@ from tabulate import tabulate
 from errors import WrapperFailure
 
 
+__all__ = ["NovaWrapper"]
+
+
 class NovaWrapper():
     def __init__(self):
         self.client = self.authenticate()
@@ -23,13 +26,12 @@ class NovaWrapper():
         )
 
     def server(self, name):
-        servers = {s.name: s for s in self.servers()}
-        server = servers.get(name, False)
-        if server:
-            return server
-        msg = red("'{}' is not an active instance.\n".format(name))
-        msg += "Use 'stackctl list' to view active instances."
-        raise WrapperFailure(msg)
+        try:
+            return self.client.servers.find(name=name)
+        except exceptions.NotFound:
+            msg = red("'{}' is not an active instance.\n".format(name))
+            msg += "Use 'stackctl list' to view active instances."
+            raise WrapperFailure(msg)
 
     def servers(self):
         return sorted(self.client.servers.list(), key=lambda x: x.name)

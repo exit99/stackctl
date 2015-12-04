@@ -12,7 +12,7 @@ or import it into a python project.
 
 Python Example:
 ```python
-from stackctl import stackctl
+import stackctl
 
 # args == INSTANCE_NAME etc...
 # kwargs == flags...
