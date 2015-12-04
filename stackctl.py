@@ -25,7 +25,7 @@ CMDS = {
 
 def fetch_command(cmd):
     if cmd == "--help":
-        print "usage: stagingctl [--help] <command> [<args>]\n"
+        print "usage: stackctl [--help] <command> [<args>]\n"
         print tabulate([[name, cmd.__doc__ ] for name, cmd in CMDS.iteritems()])
     elif cmd in CMDS:
         return CMDS[cmd]()
@@ -33,8 +33,7 @@ def fetch_command(cmd):
         print red("'{}' is not a valid command.".format(cmd))
 
 
-def main():
-    args = sys.argv[1:]
+def main(args):
     cmd = fetch_command(args.pop(0))
     errors = (InvalidCommandArgs, CommandExecutionError,
               ConnectionFailure, WrapperFailure)
@@ -51,4 +50,4 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        main()
+        main(sys.argv[1:])

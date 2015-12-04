@@ -1,25 +1,27 @@
+# Installation
+
+`pip install stackctl`
+
 # Usage
+
+Stackctl can be used from as a CLI tool by using `stackctl [--help] <command> [args]`
+or imported into python projects.
+
+Python Example:
+```python
+import stackctl
+
+stackctl.main('COMMAND', *args)
+```
 
 ## Commands
 
-### Get list of instances
-`stagingctl list`
-
-### Get list of images
-`stagingctl images`
-
-### Clone instance
-`stagingctl clone INSTANCE_NAME CLONE_NAME`
-
-### Sanitize instance
-Turns off salt minion.
-`stagingctl sanitize INSTANCE_NAME`
-Options flags: `--user=USERNAME --port=PORT`
-
-### Help
-`stagingctl --help`
-
-
+- `stackctl --help`
+- `stackctl list`: Get list of instances.
+- `stackctl images`: Get list of images.
+- `stackctl clone INSTANCE_NAME CLONE_NAME`: Clone instance.
+- `stackctl de-salt INSTANCE_NAME [--user, --port]`: Turn off salt minion.
+- `stackctl de-salt INSTANCE_NAME [--user, --port]`: Change slave mysql to master.
 
 # TODO
 

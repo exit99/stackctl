@@ -28,7 +28,7 @@ class NovaWrapper():
         if server:
             return server
         msg = red("'{}' is not an active instance.\n".format(name))
-        msg += "Use 'stagingctl list' to view active instances."
+        msg += "Use 'stackctl list' to view active instances."
         raise WrapperFailure(msg)
 
     def servers(self):
@@ -61,7 +61,7 @@ class NovaWrapper():
             id = self.client.servers.create_image(server, name)
         except exceptions.NotFound:
             msg = red("'{}' not found.\n".format(server.name))
-            msg += "Use 'stagingctl list' to view active instances."
+            msg += "Use 'stackctl list' to view active instances."
             raise WrapperFailure(msg)
         image = self.client.images.get(id)
         self.wait(image)
