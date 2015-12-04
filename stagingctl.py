@@ -3,7 +3,7 @@ import sys
 from tabulate import tabulate
 from novaclient.exceptions import AuthorizationFailure, Unauthorized
 
-from cmds import Clone, Images, List, Sanitize
+from cmds import Clone, Images, List, Desalt, Emancipate
 from colors import red
 
 from errors import (
@@ -16,9 +16,10 @@ from errors import (
 
 CMDS = {
     'clone': Clone,
+    'de-salt': Desalt,
+    'emancipate': Emancipate,
     'images': Images,
     'list': List,
-    'sanitize': Sanitize,
 }
 
 

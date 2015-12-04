@@ -50,6 +50,18 @@ class AbstractCommand(object):
         conn = ssh.Connection(host, username=user, port=port)
         return conn
 
+    def remote_command(self, cmds, *args):
+        if not isinstance(cmds, list):
+            cmds = [cmds]
+        target = args[0]
+        server = self.nova.server(target)
+        conn = self.ssh_connect(server)
+        pword = getpass("Enter sudo password: ")
+        for cmd in cmds:
+            print "Executing: {}".format(cmd)
+            cmd = "echo {} | sudo -S {}".format(pword, cmd)
+            conn.execute(cmd)
+
 
 class List(AbstractCommand):
     """Lists instances in the current tenant."""
@@ -79,18 +91,24 @@ class Clone(AbstractCommand):
         print green("Success!")
 
 
-class Sanitize(AbstractCommand):
-    """Removes salt minion and turns slave dbs into masters [--user, --port]."""
+class Desalt(AbstractCommand):
+    """Turns off salt minion. [--user, --port]."""
     min_args = 1
 
     def run(self, *args):
-        target = args[0]
-        server = self.nova.server(target)
-        conn = self.ssh_connect(server)
-        pword = getpass("Enter sudo password: ")
-        cmds = [
-            "echo {} | sudo -S service salt-minion stop".format(pword),
-        ]
-        for cmd in cmds:
-            print "Executing: {}".format(cmd.split('|')[-1])
-            conn.execute(cmd)
+        self.remote_command("service salt-minion stop", *args)
+
+
+class Emancipate(AbstractCommand):
+    """Turns slave mysql server to master, removes read-only. [--user, --port, --dbuser]."""
+    min_args = 1
+
+    def run(self, *args):
+        msg = "Are you sure you want to emancipate? This is unreversable? Y/n "
+        if raw_input(msg) == "Y":
+            dbuser = self.flags.get('dbuser', '')
+            cmds = [
+                "sed -i 's/read-only//g' /etc/mysql/my.cnf",
+                'mysql -u {} -e "stop slave;"'.format(dbuser),
+            ]
+            self.remote_command(cmds, *args)
