@@ -5,7 +5,7 @@
 # Usage
 
 Before usage you must set the appropriate enviroment variables.
-This is easiest by using the (OpenStack RC file)[http://docs.openstack.org/cli-reference/content/cli_openrc.html].
+This is easiest by using the [OpenStack RC file](http://docs.openstack.org/cli-reference/content/cli_openrc.html).
 
 Stackctl can be used from as a CLI tool, `stackctl [--help] <command> [args]`,
 or imported into a python project.
