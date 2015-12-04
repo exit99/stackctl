@@ -4,6 +4,9 @@
 
 # Usage
 
+Before usage you must set the appropriate enviroment variables.
+This is easiest by using the (OpenStack RC file)[http://docs.openstack.org/cli-reference/content/cli_openrc.html].
+
 Stackctl can be used from as a CLI tool, `stackctl [--help] <command> [args]`,
 or imported into a python project.
 
@@ -11,7 +14,12 @@ Python Example:
 ```python
 import stackctl
 
-stackctl.main('COMMAND', *args)
+# args == INSTANCE_NAME etc...
+# kwargs == flags...
+stackctl.run('COMMAND', *args, **kwargs)
+
+# Example
+stackctl.run("de-salt", "INSTANCE_NAME", user="MYUSER", "PORT"=22)
 ```
 
 ## Commands
@@ -19,6 +27,7 @@ stackctl.main('COMMAND', *args)
 - `stackctl --help`
 - `stackctl list`: Get list of instances.
 - `stackctl images`: Get list of images.
+- `stackctl rm INSTANCE_NAME`: Remove instance.
 - `stackctl clone INSTANCE_NAME CLONE_NAME`: Clone instance.
 - `stackctl de-salt INSTANCE_NAME [--user, --port]`: Turn off salt minion.
 - `stackctl emancipate-salt INSTANCE_NAME [--user, --port, --dbuser]`: Change slave mysql to master.

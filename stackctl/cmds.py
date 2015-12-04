@@ -1,20 +1,21 @@
 import re
-from datetime import datetime
 from getpass import getpass
 
-import progressbar
 from colors import green, red
-from novaclient import exceptions
 from tabulate import tabulate
 
 import ssh
-from errors import CommandExecutionError, InvalidCommandArgs
+from errors import InvalidCommandArgs
 from nova_wrapper import NovaWrapper
 
 
 class AbstractCommand(object):
     min_args = 0
     needs_auth = True
+
+    def __init__(self, **kwargs):
+        self.extra_flags = kwargs
+        return super(AbstractCommand, self).__init__()
 
     def execute(self, *args):
         self.valid_args(args)
@@ -37,6 +38,7 @@ class AbstractCommand(object):
             if re.match(".*?=.*", arg):
                 index = arg.index('=')
                 flags[arg[:index].strip('-')] = arg[index+1:]
+        flags.update(self.extra_flags)
         return flags
 
     def ssh_connect(self, server):
@@ -72,6 +74,17 @@ class List(AbstractCommand):
                 print green(server.name)
             else:
                 print red(server.name)
+
+
+class Delete(AbstractCommand):
+    """Delete an instance in the current tenant."""
+    def run(self, *args):
+        server = self.nova.server(args[0])
+        name = server.name
+        msg = "Are you sure you want to delete {}? Y/n".format(name)
+        if raw_input(msg) == "Y":
+            server.delete()
+            print green("{} deleted!".format(server.name))
 
 
 class Images(AbstractCommand):
