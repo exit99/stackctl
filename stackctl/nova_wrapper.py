@@ -84,16 +84,12 @@ class NovaWrapper():
         return instance
 
     def add_floating_ip(self, server):
-        try:
-            # BUG: This will remove the floating ip from whoever it is assigned
-            # to. Therefore we must check to see if all floating ips are
-            # assigned instead.
-            ip = self.client.floating_ips.list()[0].ip
-        except IndexError:
-            print red("No more floating IPs available! Skipping assignment.")
-        else:
+        ips = self.client.floating_ips.findall(instance_id=None)
+        if ips:
             print "Assigning floating IP."
-            server.add_floating_ip(ip)
+            server.add_floating_ip(ips[0])
+            return
+        print red("No more floating IPs available! Skipping assignment.")
 
     def floating_ip(self, server):
         try:
