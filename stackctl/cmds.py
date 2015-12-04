@@ -81,10 +81,10 @@ class Delete(AbstractCommand):
     def run(self, *args):
         server = self.nova.server(args[0])
         name = server.name
-        msg = "Are you sure you want to delete '{}'? This cannot be undone. Y/n\n".format(name)
+        msg = "Are you sure you want to remove '{}'? This cannot be undone. Y/n\n".format(name)
         if raw_input(msg) == "Y":
             server.delete()
-            print green("{} deleted!".format(server.name))
+            print green("{} removed!".format(server.name))
         else:
             print red("Cancelled.")
 
