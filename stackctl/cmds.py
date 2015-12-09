@@ -89,6 +89,22 @@ class List(AbstractCommand):
         return servers
 
 
+class Start(AbstractCommand):
+    """Start an instance in the current tenant."""
+    def run(self, *args):
+        server = self.nova.server(args[0])
+        server.start()
+        print green("{} started!".format(server.name))
+
+
+class Stop(AbstractCommand):
+    """Stop an instance in the current tenant."""
+    def run(self, *args):
+        server = self.nova.server(args[0])
+        server.stop()
+        print green("{} stopped!".format(server.name))
+
+
 class Delete(AbstractCommand):
     """Delete an instance in the current tenant."""
     def safety_check(self, *args):

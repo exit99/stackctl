@@ -4,16 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [0.1.0]- 12/9/15:
-### Refactor
+### Feature
 
-- `Add force to emancipate.`
-- `Accept kwargs in all run functions of cmds.`
+- Add force flag to `emancipate` and `rm` .
+- Accept `kwargs` in all `run` functions of cmds.
+- Add `start` and `stop` commands.
 
 
 ## [0.0.3]- 12/4/15:
 ### Refactor
 
-- `All errors are raised instead of being caught and printing a msg.` 
+- All errors are raised instead of being caught and printing a msg.
 
 
 ## [0.0.2] - 12/4/15:
