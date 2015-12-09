@@ -30,7 +30,7 @@ CMDS = {
 
 def fetch_command(cmd, **kwargs):
     if cmd == "--help":
-        print "usage: stackctl [--help] <command> [<args>]\n"
+        print "usage: stackctl [--help] <command> [<args>, --force]\n"
         print tabulate([[name, cmd.__doc__ ] for name, cmd in CMDS.iteritems()])
     elif cmd in CMDS:
         return CMDS[cmd](**kwargs)

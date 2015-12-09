@@ -33,3 +33,8 @@ stackctl.run("de-salt", "INSTANCE_NAME", user="MYUSER", "PORT"=22)
 - `stackctl clone INSTANCE_NAME CLONE_NAME`: Clone instance.
 - `stackctl de-salt INSTANCE_NAME [--user, --port]`: Turn off salt minion.
 - `stackctl emancipate-salt INSTANCE_NAME [--user, --port, --dbuser]`: Change slave mysql to master.
+
+
+# TODO
+
+1. Add command to start and stop instances.
