@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from time import sleep
 
 import progressbar
 from colors import green, red
@@ -47,12 +48,21 @@ class NovaWrapper():
         return [name, image.id, "{}%".format(image.progress)]
 
     def clone(self, server, name):
+        key_name = self.create_keypair()
         snapshot = self.snapshot(server)
-        clone = self.create_instance(server, snapshot, name)
+        clone = self.create_instance(server, snapshot, name, key_name)
         self.add_floating_ip(clone)
         print "Deleting snapshot."
         snapshot.delete()
         return clone
+
+    def create_keypair(self):
+        name, key = self.keypair_params()
+        try:
+            self.client.keypairs.create(name, key)
+        except exceptions.Conflict:
+            pass
+        return name
 
     def snapshot(self, server):
         now = datetime.now()
@@ -70,7 +80,7 @@ class NovaWrapper():
         print green("Snapshot creation successful!")
         return image
 
-    def create_instance(self, server, image, name):
+    def create_instance(self, server, image, name, key_name=None):
         print "Creating instance: {}".format(name)
         print "This may take a while..."
         flavor = self.client.flavors.get(server.flavor['id'])
@@ -79,11 +89,26 @@ class NovaWrapper():
             image,
             flavor,
             security_groups=(item['name'] for item in server.security_groups),
-            key_name=server.key_name,
+            key_name=key_name or server.key_name,
         )
         self.wait(instance)
         print green("Instance creation successful!")
         return instance
+
+    def keypair_params(self):
+        path = os.path.expanduser(
+            os.environ.get("STACKCTL_PUBLIC_KEY", '~/.ssh/id_rsa.pub')
+        )
+        try:
+            with open(path, 'r') as f:
+                key = f.read().strip('\n')
+        except IOError:
+            msg = "Cannot find public key at '{}'".format(path)
+            raise WrapperFailure(msg)
+        else:
+            name = os.environ.get("STACKCTL_KEYPAIR_NAME", "stackctl-keypair")
+            return name, key
+
 
     def add_floating_ip(self, server):
         ips = self.client.floating_ips.findall(instance_id=None)
@@ -108,4 +133,6 @@ class NovaWrapper():
         bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
         while item.progress < 100 and item.status != status:
             bar.update(item.progress)
+            # To keep connection from being ratelimited.
+            sleep(3)
             item.get()
