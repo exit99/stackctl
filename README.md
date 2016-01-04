@@ -2,6 +2,25 @@
 
 `pip install stackctl`
 
+
+# Environment Variables
+
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td>STACKCTL_PUBLIC_KEY</td>
+        <td>~/.ssh/id_rsa.pub</td>
+    </tr>
+    <tr>
+        <td>STACKCTL_KEYPAIR_NAME</td>
+        <td>stackctl-keypair</td>
+    </tr>
+</table>
+
+
 # Usage
 
 Before usage you must set the appropriate enviroment variables.

@@ -3,6 +3,12 @@ All notable changes will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.2.0]- 1/4/16:
+### Refactor
+
+- When cloning, do not automatically use the keypair that created the vm.  Instead, create a stackctl keypair to use.
+
+
 ## [0.1.0]- 12/9/15:
 ### Feature
 
