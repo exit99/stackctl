@@ -3,6 +3,12 @@ All notable changes will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.2.1]- 1/4/16:
+### feat
+
+- List cmd can ignore server name written to ~/.stackctl_ignore or the env var STACKCTL_IGNORE.
+
+
 ## [0.2.0]- 1/4/16:
 ### Refactor
 

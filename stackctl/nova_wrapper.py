@@ -35,7 +35,20 @@ class NovaWrapper():
             raise WrapperFailure(msg)
 
     def servers(self):
-        return sorted(self.client.servers.list(), key=lambda x: x.name)
+        servers = sorted(self.client.servers.list(), key=lambda x: x.name)
+        ignored = self.ignored_servers
+        return filter(lambda x: x.name not in self.ignored_servers, servers)
+
+    @property
+    def ignored_servers(self):
+        path = os.path.expanduser(
+            os.environ.get("STACKCTL_IGNORE", '~/.stackctl_ignore')
+        )
+        try:
+            with open(path, 'r') as f:
+                return f.read().split('\n')
+        except IOError:
+            return []
 
     def images(self):
         return sorted(self.client.images.list(), key=lambda x: x.name)

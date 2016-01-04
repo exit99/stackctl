@@ -18,6 +18,10 @@
         <td>STACKCTL_KEYPAIR_NAME</td>
         <td>stackctl-keypair</td>
     </tr>
+    <tr>
+        <td>STACKCTL_IGNORE</td>
+        <td>~/.stackctl_ignore</td>
+    </tr>
 </table>
 
 
