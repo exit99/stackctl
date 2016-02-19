@@ -18,7 +18,9 @@ class Connection(object):
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         # Remove keys with empty values.
         kwargs = dict((k, v) for k, v in kwargs.iteritems() if v)
-        keyfile = os.path.join(os.path.expanduser('~'), '.ssh/id_rsa')
+        keyfile = os.path.expanduser(
+            os.environ.get('STACKCTL_PRIVATE_KEY', '~/.ssh/id_rsa')
+        )
         try:
             self.ssh.connect(host, key_filename=keyfile, **kwargs)
         except paramiko.ssh_exception.NoValidConnectionsError as e:
@@ -27,7 +29,7 @@ class Connection(object):
             raise ConnectionFailure(msg)
         except IOError as e:
             msg = red(e.strerror)
-            msg += "\nIs your public key located at '~/.ssh/id_rsa'?"
+            msg += "\nIs your public key located at '{}'?".format(keyfile)
             raise ConnectionFailure(msg)
 
     def execute(self, cmd):

@@ -11,6 +11,10 @@
         <th>Default</th>
     </tr>
     <tr>
+        <td>STACKCTL_PRIVATE_KEY</td>
+        <td>~/.ssh/id_rsa</td>
+    </tr>
+    <tr>
         <td>STACKCTL_PUBLIC_KEY</td>
         <td>~/.ssh/id_rsa.pub</td>
     </tr>
