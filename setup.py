@@ -14,7 +14,7 @@ if __name__ == '__main__':
             "ansicolors==1.0.2",
             "Babel==2.1.1",
             "debtcollector==1.0.0",
-            "ecdsa==0.13",
+            "ecdsa==0.13.3",
             "iso8601==0.1.11",
             "keystoneauth1==2.0.0",
             "monotonic==0.4",
