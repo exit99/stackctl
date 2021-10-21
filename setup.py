@@ -12,7 +12,7 @@ if __name__ == '__main__':
         keywords=['openstack'],
         install_requires=[
             "ansicolors==1.0.2",
-            "Babel==2.1.1",
+            "Babel==2.9.1",
             "debtcollector==1.0.0",
             "ecdsa==0.13",
             "iso8601==0.1.11",
