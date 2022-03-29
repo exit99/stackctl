@@ -25,7 +25,7 @@ if __name__ == '__main__':
             "oslo.i18n==3.0.0",
             "oslo.serialization==2.0.0",
             "oslo.utils==3.0.0",
-            "paramiko==1.16.0",
+            "paramiko==2.10.1",
             "pbr==1.8.1",
             "prettytable==0.7.2",
             "progressbar2==3.5.1",
