@@ -11,7 +11,7 @@ netifaces==0.10.4
 oslo.config==3.0.0
 oslo.i18n==3.0.0
 oslo.serialization==2.0.0
-oslo.utils==3.0.0
+oslo.utils==4.10.1
 paramiko==1.16.0
 pbr==1.8.1
 prettytable==0.7.2
